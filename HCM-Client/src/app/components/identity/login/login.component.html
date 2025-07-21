@@ -1,0 +1,68 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="logo-wrapper">
+        <img src="logo.png" alt="Company Logo" />
+      </div>
+      <h1 class="login-title">HCM System</h1>
+      <p class="login-subtitle">Sign in to your account</p>
+    </div>
+
+    <div class="login-body">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.invalid]="email.invalid && (email.touched || submitted)"
+          />
+          <div
+            class="error"
+            *ngIf="email.hasError('required') && (email.touched || submitted)"
+          >
+            Email is required
+          </div>
+          <div
+            class="error"
+            *ngIf="email.hasError('email') && (email.touched || submitted)"
+          >
+            Please enter a valid email
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            [class.invalid]="
+              password.invalid && (password.touched || submitted)
+            "
+          />
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('required') && (password.touched || submitted)
+            "
+          >
+            Password is required
+          </div>
+        </div>
+
+        <button type="submit" class="login-button" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span class="spinner" *ngIf="isLoading"></span>
+        </button>
+      </form>
+    </div>
+
+    <div class="login-footer">
+      <button class="link-button" (click)="navigateToSignup()">
+        Don't have an account? Sign up
+      </button>
+    </div>
+  </div>
+</div>

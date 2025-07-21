@@ -1,0 +1,47 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <header class="profile-header">
+      <button class="back-btn" (click)="goBack()">&larr; Back</button>
+      <h2>Person Profile</h2>
+    </header>
+
+    <div class="profile-body">
+      <div class="loading" *ngIf="isLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <div *ngIf="!isLoading && error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div *ngIf="!isLoading && person">
+        <div class="field">
+          <span class="label">Name:</span>
+          <span class="value"
+            >{{ person.firstName }} {{ person.lastName }}</span
+          >
+        </div>
+        <div class="field">
+          <span class="label">Email:</span>
+          <span class="value">{{ person.email }}</span>
+        </div>
+        <div class="field">
+          <span class="label">Job Title:</span>
+          <span class="value">{{ person.jobTitle }}</span>
+        </div>
+        <div class="field">
+          <span class="label">Department:</span>
+          <span class="value">{{ person.department }}</span>
+        </div>
+        <div class="field">
+          <span class="label">Role:</span>
+          <span class="value">{{ person.role }}</span>
+        </div>
+        <div class="field">
+          <span class="label">Salary:</span>
+          <span class="value">${{ person.salary | number : "1.0-0" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

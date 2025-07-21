@@ -1,0 +1,287 @@
+<div class="person-form-container">
+  <div class="form-card">
+    <!-- Header -->
+    <div class="form-card-header">
+      <h2>
+        {{ isEditMode ? "Edit Person" : "Add New Person" }}
+      </h2>
+      <p class="subtitle">
+        {{
+          isEditMode ? "Update person information" : "Create a new team member"
+        }}
+      </p>
+    </div>
+
+    <!-- Content -->
+    <div class="form-card-content">
+      <form [formGroup]="personForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Row 1 -->
+        <div class="form-row">
+          <div class="form-field half-width">
+            <label for="firstName">First Name</label>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              [class.invalid]="
+                firstName.invalid && (firstName.touched || submitted)
+              "
+              required
+            />
+            <div
+              class="error"
+              *ngIf="
+                firstName.hasError('required') &&
+                (firstName.touched || submitted)
+              "
+            >
+              First name is required
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                firstName.hasError('maxlength') &&
+                (firstName.touched || submitted)
+              "
+            >
+              First name must be at most 50 characters
+            </div>
+          </div>
+
+          <div class="form-field half-width">
+            <label for="lastName">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              [class.invalid]="
+                lastName.invalid && (lastName.touched || submitted)
+              "
+              required
+            />
+            <div
+              class="error"
+              *ngIf="
+                lastName.hasError('required') && (lastName.touched || submitted)
+              "
+            >
+              Last name is required
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                lastName.hasError('maxlength') &&
+                (lastName.touched || submitted)
+              "
+            >
+              Last name must be at most 50 characters
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-field full-width">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.invalid]="email.invalid && (email.touched || submitted)"
+            required
+          />
+          <div
+            class="error"
+            *ngIf="email.hasError('required') && (email.touched || submitted)"
+          >
+            Email is required
+          </div>
+          <div
+            class="error"
+            *ngIf="email.hasError('email') && (email.touched || submitted)"
+          >
+            Please enter a valid email
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="form-row">
+          <div class="form-field half-width">
+            <label for="jobTitle">Job Title</label>
+            <input
+              id="jobTitle"
+              type="text"
+              formControlName="jobTitle"
+              [class.invalid]="
+                jobTitle.invalid && (jobTitle.touched || submitted)
+              "
+              required
+            />
+            <div
+              class="error"
+              *ngIf="
+                jobTitle.hasError('required') && (jobTitle.touched || submitted)
+              "
+            >
+              Job title is required
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                jobTitle.hasError('maxlength') &&
+                (jobTitle.touched || submitted)
+              "
+            >
+              Job title must be at most 100 characters
+            </div>
+          </div>
+
+          <div class="form-field half-width">
+            <label for="department">Department</label>
+            <select
+              id="department"
+              formControlName="department"
+              [class.invalid]="
+                department.invalid && (department.touched || submitted)
+              "
+              required
+            >
+              <option value="" disabled selected>Select department</option>
+              <option *ngFor="let dept of departments" [value]="dept">
+                {{ dept }}
+              </option>
+            </select>
+            <div
+              class="error"
+              *ngIf="
+                department.hasError('required') &&
+                (department.touched || submitted)
+              "
+            >
+              Department is required
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="form-row">
+          <div class="form-field half-width">
+            <label for="salary">Salary</label>
+            <div class="salary-wrapper">
+              <span class="prefix">$</span>
+              <input
+                id="salary"
+                type="number"
+                formControlName="salary"
+                [class.invalid]="
+                  salary.invalid && (salary.touched || submitted)
+                "
+                required
+              />
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                salary.hasError('required') && (salary.touched || submitted)
+              "
+            >
+              Salary is required
+            </div>
+            <div
+              class="error"
+              *ngIf="salary.hasError('min') && (salary.touched || submitted)"
+            >
+              Salary must be non-negative
+            </div>
+            <div
+              class="error"
+              *ngIf="salary.hasError('max') && (salary.touched || submitted)"
+            >
+              Salary is unrealistically high
+            </div>
+          </div>
+
+          <div class="form-field half-width" *ngIf="canEditRole()">
+            <label for="role">Role</label>
+            <select
+              id="role"
+              formControlName="role"
+              [class.invalid]="role.invalid && (role.touched || submitted)"
+              required
+            >
+              <option value="" disabled selected>Select role</option>
+              <option *ngFor="let r of roles" [value]="r">
+                {{ r === "HrAdmin" ? "HR Admin" : r }}
+              </option>
+            </select>
+            <div
+              class="error"
+              *ngIf="role.hasError('required') && (role.touched || submitted)"
+            >
+              Role is required
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 5 (password only when creating) -->
+        <div class="form-field full-width" *ngIf="!isEditMode">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            [class.invalid]="
+              password.invalid && (password.touched || submitted)
+            "
+            required
+          />
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('required') && (password.touched || submitted)
+            "
+          >
+            Password is required
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('minlength') && (password.touched || submitted)
+            "
+          >
+            Password must be at least 8 characters
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('invalidPassword') &&
+              (password.touched || submitted)
+            "
+          >
+            Password must contain at least one number and one special character
+          </div>
+        </div>
+      </form>
+
+      <!-- Loading spinner -->
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-card-actions">
+      <button class="btn-link" (click)="cancel()" [disabled]="isLoading">
+        Cancel
+      </button>
+      <button
+        class="btn"
+        [class.disabled]="!personForm.valid || isLoading"
+        (click)="onSubmit()"
+        [disabled]="!personForm.valid || isLoading"
+      >
+        <span *ngIf="!isLoading">{{ isEditMode ? "Update" : "Create" }}</span>
+        <div class="spinner small" *ngIf="isLoading"></div>
+      </button>
+    </div>
+  </div>
+</div>

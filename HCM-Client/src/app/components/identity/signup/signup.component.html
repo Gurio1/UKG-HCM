@@ -1,0 +1,299 @@
+<div class="signup-container">
+  <div class="signup-box">
+    <!-- Header -->
+    <div class="signup-header">
+      <h1 class="signup-title">Create Account</h1>
+      <p class="signup-subtitle">Join the HCM System</p>
+    </div>
+
+    <!-- Body / Form -->
+    <div class="signup-body">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- FIRST NAME -->
+        <div class="form-field half-width">
+          <label for="firstName">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            [class.invalid]="
+              firstName.invalid && (firstName.touched || submitted)
+            "
+            required
+          />
+          <!-- client-side errors -->
+          <div
+            class="error"
+            *ngIf="
+              firstName.hasError('required') && (firstName.touched || submitted)
+            "
+          >
+            First name is required
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              firstName.hasError('maxlength') &&
+              (firstName.touched || submitted)
+            "
+          >
+            First name cannot exceed 50 chars
+          </div>
+          <!-- server-side error -->
+          <div class="error" *ngIf="firstName.hasError('serverError')">
+            {{ firstName.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- LAST NAME -->
+        <div class="form-field half-width">
+          <label for="lastName">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            [class.invalid]="
+              lastName.invalid && (lastName.touched || submitted)
+            "
+            required
+          />
+          <div
+            class="error"
+            *ngIf="
+              lastName.hasError('required') && (lastName.touched || submitted)
+            "
+          >
+            Last name is required
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              lastName.hasError('maxlength') && (lastName.touched || submitted)
+            "
+          >
+            Last name cannot exceed 50 chars
+          </div>
+          <div class="error" *ngIf="lastName.hasError('serverError')">
+            {{ lastName.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-field full-width">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.invalid]="email.invalid && (email.touched || submitted)"
+            required
+          />
+          <div
+            class="error"
+            *ngIf="email.hasError('required') && (email.touched || submitted)"
+          >
+            Email is required
+          </div>
+          <div
+            class="error"
+            *ngIf="email.hasError('email') && (email.touched || submitted)"
+          >
+            Please enter a valid email
+          </div>
+          <div class="error" *ngIf="email.hasError('serverError')">
+            {{ email.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- JOB TITLE -->
+        <div class="form-field half-width">
+          <label for="jobTitle">Job Title</label>
+          <input
+            id="jobTitle"
+            type="text"
+            formControlName="jobTitle"
+            [class.invalid]="
+              jobTitle.invalid && (jobTitle.touched || submitted)
+            "
+            required
+          />
+          <div
+            class="error"
+            *ngIf="
+              jobTitle.hasError('required') && (jobTitle.touched || submitted)
+            "
+          >
+            Job title is required
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              jobTitle.hasError('maxlength') && (jobTitle.touched || submitted)
+            "
+          >
+            Job title cannot exceed 100 chars
+          </div>
+          <div class="error" *ngIf="jobTitle.hasError('serverError')">
+            {{ jobTitle.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- DEPARTMENT -->
+        <div class="form-field half-width">
+          <label for="department">Department</label>
+          <select
+            id="department"
+            formControlName="department"
+            [class.invalid]="
+              department.invalid && (department.touched || submitted)
+            "
+            required
+          >
+            <option value="" disabled selected>Select department</option>
+            <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+          </select>
+          <div
+            class="error"
+            *ngIf="
+              department.hasError('required') &&
+              (department.touched || submitted)
+            "
+          >
+            Department is required
+          </div>
+          <div class="error" *ngIf="department.hasError('serverError')">
+            {{ department.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- SALARY -->
+        <div class="form-field full-width">
+          <label for="salary">Salary</label>
+          <div class="salary-wrapper">
+            <span class="prefix">$</span>
+            <input
+              id="salary"
+              type="number"
+              formControlName="salary"
+              [class.invalid]="salary.invalid && (salary.touched || submitted)"
+              required
+            />
+          </div>
+          <div
+            class="error"
+            *ngIf="salary.hasError('required') && (salary.touched || submitted)"
+          >
+            Salary is required
+          </div>
+          <div
+            class="error"
+            *ngIf="salary.hasError('min') && (salary.touched || submitted)"
+          >
+            Salary must be non-negative
+          </div>
+          <div
+            class="error"
+            *ngIf="salary.hasError('max') && (salary.touched || submitted)"
+          >
+            Salary is unrealistically high
+          </div>
+          <div class="error" *ngIf="salary.hasError('serverError')">
+            {{ salary.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-field full-width">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            [class.invalid]="
+              password.invalid && (password.touched || submitted)
+            "
+            required
+          />
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('required') && (password.touched || submitted)
+            "
+          >
+            Password is required
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('minlength') && (password.touched || submitted)
+            "
+          >
+            Password must be at least 8 characters
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              password.hasError('invalidPassword') &&
+              (password.touched || submitted)
+            "
+          >
+            Password must contain at least one number and one special character
+          </div>
+          <div class="error" *ngIf="password.hasError('serverError')">
+            {{ password.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="form-field full-width">
+          <label for="confirmedPassword">Confirm Password</label>
+          <input
+            id="confirmedPassword"
+            type="password"
+            formControlName="confirmedPassword"
+            [class.invalid]="
+              (confirmedPassword.invalid ||
+                signupForm.hasError('passwordMismatch')) &&
+              (confirmedPassword.touched || submitted)
+            "
+            required
+          />
+          <div
+            class="error"
+            *ngIf="
+              confirmedPassword.hasError('required') &&
+              (confirmedPassword.touched || submitted)
+            "
+          >
+            Please confirm your password
+          </div>
+          <div
+            class="error"
+            *ngIf="
+              signupForm.hasError('passwordMismatch') &&
+              (confirmedPassword.touched || submitted)
+            "
+          >
+            Passwords do not match
+          </div>
+          <div class="error" *ngIf="confirmedPassword.hasError('serverError')">
+            {{ confirmedPassword.getError("serverError") }}
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="signup-button" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Create Account</span>
+          <span class="spinner" *ngIf="isLoading"></span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="signup-footer">
+      <button class="link-button" (click)="navigateToLogin()">
+        Already have an account? Sign in
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<!-- person-list.component.html -->
+<div class="person-list-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Team Members</h1>
+    <button class="btn" routerLink="/persons/create" *ngIf="canCreate()">
+      <i class="fas fa-plus"></i>
+      Add Person
+    </button>
+  </div>
+
+  <div class="list-card">
+    <div class="card-content">
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="isLoading">
+        <div class="spinner"></div>
+      </div>
+
+      <!-- Data Table -->
+      <div *ngIf="!isLoading && persons">
+        <table class="persons-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Job Title</th>
+              <th>Department</th>
+              <th>Role</th>
+              <th>Salary</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let person of persons.persons">
+              <td>
+                <div class="person-name">
+                  <i class="fas fa-user-circle avatar"></i>
+                  <span>{{ person.firstName }} {{ person.lastName }}</span>
+                </div>
+              </td>
+              <td>{{ person.email }}</td>
+              <td>{{ person.jobTitle }}</td>
+              <td>
+                <span class="department-badge">{{ person.department }}</span>
+              </td>
+              <td>
+                <span class="role-badge role-{{ person.role.toLowerCase() }}">
+                  {{ getRoleDisplayName(person.role) }}
+                </span>
+              </td>
+              <td>
+                <span class="salary"
+                  >${{ person.salary | number : "1.0-0" }}</span
+                >
+              </td>
+              <td>
+                <div class="actions">
+                  <button class="icon-btn" (click)="toggleMenu(person, $event)">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="action-menu" *ngIf="isMenuOpenFor(person)">
+                    <li *ngIf="canEdit(person)">
+                      <a routerLink="/persons/{{ person.id }}/edit">
+                        <i class="fas fa-edit"></i> Edit
+                      </a>
+                    </li>
+                    <li *ngIf="canDelete()">
+                      <a (click)="deletePerson(person)">
+                        <i class="fas fa-trash"></i> Delete
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Simple Pagination -->
+        <div
+          class="pagination"
+          *ngIf="!isLoading && persons.totalCount > persons.pageSize"
+        >
+          <button (click)="prevPage()" [disabled]="persons.page <= 1">
+            Prev
+          </button>
+          <span>Page {{ persons.page }} of {{ totalPages() }}</span>
+          <button
+            (click)="nextPage()"
+            [disabled]="persons.page >= totalPages()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- No Data -->
+      <div
+        *ngIf="!isLoading && persons && persons.persons.length === 0"
+        class="no-data"
+      >
+        <i class="fas fa-users"></i>
+        <h3>No team members found</h3>
+        <p>Start by adding your first team member.</p>
+        <button class="btn" routerLink="/persons/create" *ngIf="canCreate()">
+          Add Person
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

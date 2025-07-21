@@ -1,0 +1,67 @@
+<header class="topbar">
+  <!-- Logo -->
+  <a class="logo" routerLink="/dashboard">
+    <img src="logo.png" alt="Logo" />
+  </a>
+
+  <!-- Nav links -->
+  <nav class="nav-links" *ngIf="currentUser">
+    <a routerLink="/dashboard" routerLinkActive="active" exact>
+      <i class="fas fa-tachometer-alt"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      *ngIf="canViewPersons()"
+      routerLink="/persons"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <i class="fas fa-users"></i>
+      <span>Team</span>
+    </a>
+
+    <a
+      *ngIf="canCreatePersons()"
+      routerLink="/persons/create"
+      routerLinkActive="active"
+    >
+      <i class="fas fa-user-plus"></i>
+      <span>Add Person</span>
+    </a>
+  </nav>
+
+  <div class="spacer"></div>
+
+  <!-- User menu -->
+  <div class="user-menu" *ngIf="currentUser">
+    <button class="user-button" (click)="showMenu = !showMenu">
+      <div class="user-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="user-info">
+        <span class="user-email">{{ currentUser.email }}</span>
+        <span class="user-role">{{
+          getRoleDisplayName(currentUser.role)
+        }}</span>
+      </div>
+      <i class="fas fa-caret-down arrow"></i>
+    </button>
+
+    <ul class="dropdown-menu" *ngIf="showMenu">
+      <li>
+        <a routerLink="/profile">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+      <li><hr /></li>
+      <li>
+        <a (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
