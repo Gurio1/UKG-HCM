@@ -46,8 +46,8 @@ It demonstrates backend and frontend architecture, vertical slice design, JWT au
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/HCM.git
-cd HCM
+git clone https://github.com/Gurio1/UKG-HCM.git
+cd .\UKG-HCM\
 ```
 ### 2. Build and run everything
 
@@ -87,5 +87,7 @@ Use your IDE’s test runner.
 This week turned out to be quite intense for me, and I was only able to dedicate a couple of days to working on the project. Unfortunately, there are still several minor bugs on the frontend that I didn’t have time to resolve. I also wasn’t able to fully implement role and department separation in the database.
 
 I’m fully aware that relying on string representations for such data is not ideal, and I hope that my overall effort might still earn a few bonus points despite this. I sincerely hope that the architectural choices I made on the backend will be seen positively and won’t detract from the overall impression.
+
+One of the things I regret the most is not having enough time to ensure that backend validation errors are properly displayed to the user on the frontend. This is probably the biggest feature I regret not completing.
 
 I also hope I haven’t overlooked anything important, and I’d be glad to attend the final interview and answer any questions you may have.
